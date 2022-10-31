@@ -101,7 +101,7 @@ def __load_types():
     import os
     d = dict.fromkeys([ x[:-3] for x in os.listdir(os.path.dirname(__file__) or '.') if x.endswith('.py') ])
     g = globals()
-    for k, v in g.iteritems():
+    for k, v in g.items():
         if k.startswith('ETH_TYPE_'):
             name = k[9:]
             modname = name.lower()

@@ -53,7 +53,7 @@ class IP(dpkt.Packet):
         dpkt.Packet.unpack(self, buf)
         ol = ((self.v_hl & 0xf) << 2) - self.__hdr_len__
         if ol < 0:
-            raise dpkt.UnpackError, 'invalid header length'
+            raise dpkt.UnpackError('invalid header length')
         self.opts = buf[self.__hdr_len__:self.__hdr_len__ + ol]
         buf = buf[self.__hdr_len__ + ol:self.len]
         try:
@@ -244,7 +244,7 @@ def __load_protos():
     import os
     d = dict.fromkeys([ x[:-3] for x in os.listdir(os.path.dirname(__file__) or '.') if x.endswith('.py') ])
     g = globals()
-    for k, v in g.iteritems():
+    for k, v in g.items():
         if k.startswith('IP_PROTO_'):
             name = k[9:].lower()
             if name in d:
@@ -267,12 +267,12 @@ if __name__ == '__main__':
             u.ulen += len(u.data)
             ip.data = u
             ip.len += len(u)
-            self.failUnless(str(ip) == s)
+            self.assertTrue(str(ip) == s)
 
             ip = IP(s)
-            self.failUnless(str(ip) == s)
-            self.failUnless(ip.udp.sport == 111)
-            self.failUnless(ip.udp.data == 'foobar')
+            self.assertTrue(str(ip) == s)
+            self.assertTrue(ip.udp.sport == 111)
+            self.assertTrue(ip.udp.data == 'foobar')
 
         def test_hl(self):
             s = 'BB\x03\x00\x00\x00\x00\x00\x00\x00\xd0\x00\xec\xbc\xa5\x00\x00\x00\x03\x80\x00\x00\xd0\x01\xf2\xac\xa5"0\x01\x00\x14\x00\x02\x00\x0f\x00\x00\x00\x00\x00\x00\x00\x00\x00'
@@ -285,6 +285,6 @@ if __name__ == '__main__':
             s = '\x4f\x00\x00\x50\xae\x08\x00\x00\x40\x06\x17\xfc\xc0\xa8\x0a\x26\xc0\xa8\x0a\x01\x07\x27\x08\x01\x02\x03\x04\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
             ip = IP(s)
             ip.sum = 0
-            self.failUnless(str(ip) == s)
+            self.assertTrue(str(ip) == s)
 
     unittest.main()

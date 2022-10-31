@@ -32,15 +32,15 @@ def discover_neighbors (interface, timeout=100):
         if vrrp_packet.version == 3:
             return
 
-        print ""
-        print ip_packet.unpack
-        print vrrp_packet.unpack
-        print vrrp_packet.checksum
+        print("")
+        print(ip_packet.unpack)
+        print(vrrp_packet.unpack)
+        print(vrrp_packet.checksum)
         vrrp_packet.checksum = 0
-        print dpkt.in_cksum(vrrp_packet.pack_hdr() + vrrp_packet.addrs[0])
+        print(dpkt.in_cksum(vrrp_packet.pack_hdr() + vrrp_packet.addrs[0]))
         version = vrrp_packet.version
         for i in vrrp_packet.addrs:
-            print socket.inet_ntop(ip_version_map[version], i)
+            print(socket.inet_ntop(ip_version_map[version], i))
     
     try:
         pcap = pcapy.open_live (interface, 1524, 1, timeout)
@@ -50,10 +50,10 @@ def discover_neighbors (interface, timeout=100):
             while True:
                 # this is more responsive to  keyboard interrupts
                 pcap.dispatch (1, on_vrrp_packet)
-        except KeyboardInterrupt, e:
+        except KeyboardInterrupt as e:
             pass
-    except Exception, e:
-        print e
+    except Exception as e:
+        print(e)
     
 if __name__ == "__main__" :
     options  = docopt(__doc__)
